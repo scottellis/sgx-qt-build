@@ -3,8 +3,8 @@ if [[ -z "${OETMP}" ]]; then
 	exit 1
 fi
 
-SYSROOTSDIR=${OETMP}/sysroots
-STAGEDIR=${SYSROOTSDIR}/`uname -m`-linux/usr/bin
+export SYSROOTSDIR=${OETMP}/sysroots
+export STAGEDIR=${SYSROOTSDIR}/`uname -m`-linux/usr/bin
 
 export KERNELDIR=${SYSROOTSDIR}/overo/kernel
 
