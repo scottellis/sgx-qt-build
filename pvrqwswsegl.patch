@@ -1,0 +1,36 @@
+diff --git a/src/plugins/gfxdrivers/powervr/QWSWSEGL/pvrqwswsegl.c b/src/plugins/gfxdrivers/powervr/QWSWSEGL/pvrqwswsegl.c
+index 74c0f54..038a7d9 100644
+--- a/src/plugins/gfxdrivers/powervr/QWSWSEGL/pvrqwswsegl.c
++++ b/src/plugins/gfxdrivers/powervr/QWSWSEGL/pvrqwswsegl.c
+@@ -378,6 +378,20 @@ static WSEGLError wseglGetDrawableParameters
+     return WSEGL_SUCCESS;
+ }
+ 
++/* Function stub for ConnectDrawable() */
++static WSEGLError wseglConnectDrawable(WSEGLDrawableHandle hDrawable)
++{
++    WSEGL_UNREFERENCED_PARAMETER(hDrawable);
++    return WSEGL_SUCCESS;
++}
++
++/* Function stub for DisconnectDrawable() */
++static WSEGLError wseglDisconnectDrawable(WSEGLDrawableHandle hDrawable)
++{
++    WSEGL_UNREFERENCED_PARAMETER(hDrawable);
++    return WSEGL_SUCCESS;
++}
++
+ static WSEGL_FunctionTable const wseglFunctions = {
+     WSEGL_VERSION,
+     wseglIsDisplayValid,
+@@ -391,7 +405,9 @@ static WSEGL_FunctionTable const wseglFunctions = {
+     wseglWaitNative,
+     wseglCopyFromDrawable,
+     wseglCopyFromPBuffer,
+-    wseglGetDrawableParameters
++    wseglGetDrawableParameters,
++    wseglConnectDrawable,
++    wseglDisconnectDrawable
+ };
+ 
+ /* Return the table of WSEGL functions to the EGL implementation */
