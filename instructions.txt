@@ -169,18 +169,17 @@ It looks like this
 
         export SYSROOTSDIR=${OETMP}/sysroots
         export STAGEDIR=${SYSROOTSDIR}/`uname -m`-linux/usr/bin
-        export CROSSBINDIR=${STAGEDIR}/armv7a-vfp-neon-poky-linux-gnueabi
         
         export KERNELDIR=${SYSROOTSDIR}/overo/kernel
         
-        PATH=${PATH}:${STAGEDIR}:${CROSSBINDIR}
+        PATH=${PATH}:${STAGEDIR}:${STAGEDIR}/armv7a-vfp-neon-poky-linux-gnueabi
 
 
-Save it as yocto-source-me.txt where ever you want then run it like this 
+Save it as yocto-cross-env.sh where ever you want then run it like this 
 substituting your OETMP.
 
         scott@quad:~$ export OETMP=/oe5
-        scott@quad:~$ source yocto-source-me.txt
+        scott@quad:~$ source yocto-cross-env.sh
 
 
 4) Go to the ~/Graphics_SDK_4_06_00_02 directory and modify the Rules.make file,
@@ -255,14 +254,12 @@ The OMAP3530 kernel modules will be in the gfx_rel_es3.x subdirectory.
 
 That's all for the PowerVR drivers. 
 
-If you want to test this now, skip to section 4.    
-
 
 --------------------------------------------------------------------------------
 3. BUILD QT WITH THE POWERVR PLUGIN
 --------------------------------------------------------------------------------
 
-These instructions are for Qt version 4.8.3. The latest version when I wrote
+These instructions are for Qt version 4.8.3. The latest Qt4 version when I wrote
 this.
 
 To make the install a little easier and because I don't fully understand the
@@ -403,13 +400,6 @@ get used until 'make install' is run later.
         -D QT_NO_QWS_CURSOR -D QT_QWS_CLIENTBLIT \
          -depths 16,24,32 -qt-mouse-pc -plugin-mouse-pc \
         -opengl es2 -qt-gfx-linuxfb -plugin-gfx-powervr
-
-
-Once you are convinced it works you can add -nomake demos and -nomake examples
-to significantly speed up the build.
-
-You can also add in the touchscreen plugins if you want that. Those are not
-immediate needs for our project so I haven't bothered.
 
 
 7) Build Qt
