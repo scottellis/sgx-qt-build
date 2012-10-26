@@ -99,7 +99,8 @@ Here is what mine looks like. You don't need the libertas patch.
         bitbake virtual/kernel
 	
 
-3) Rebuild your image. It should not include Qt.
+3) Rebuild your image. It should not include Qt, but should include the tslib
+packages.
 
 
 4) You should probably install it onto an SD card and make sure everything is
@@ -115,17 +116,11 @@ TI documentation for their Graphics SDK can be found here
 http://processors.wiki.ti.com/index.php/Graphics_SDK_Quick_installation_and_user_guide
 
 From the above wiki link in the table in the 'About Graphics SDK', it shows
-that there are  differences in the SGX Core revisions used by the OMAP3530 and 
-DM3730 SOCs.
+that there are  differences in the SGX Core revisions used by the OMAP35xx and 
+DM37xx SOCs.
 
-That same information can be found from the TRMs for the respective SOCs.
-
-OMAP 3530 uses POWERVR™ SGX530 v1.2.1 (TRM Section 13.1, spruf98x.pdf)
-
-DM3730 uses POWERVR™ SGX530 v1.2.5 (TRM Section 8.1, sprugn4r.pdf)
-
-There are slight modifications to the instructions based on that SOC you are
-targeting.
+As a result, the binaries from the SDK are specific to the SGX core you are
+targetting.
 
 
 1) Download the TI Graphics SDK from here
@@ -137,8 +132,9 @@ at the time I wrote this.
 
 
 2a) If you are on a 64-bit platform, I believe you need the 32-bit compatibility
-libraries to execute the bin file. You should do this first. For Ubuntu, use 
-this command
+libraries to execute the bin file. You should do this first. 
+
+Ubuntu users can use this command
 
         sudo apt-get install ia32-libs
 
@@ -153,11 +149,12 @@ The default extract location is
 
 which I'll use.
 
-When prompted, you should select es3.x, es5.x and the sdk for the Gumstix
-Overos.
+When prompted, you should select es3.x, es5.x and the SDK.
+
 
 3) Add some Yocto built cross-tools to your PATH. Do this however you want. 
-I have a script that I use for this kind of thing I call yocto-source-me.txt
+I have a script that I use for this kind of thing I call yocto-cross-env.sh
+
 It looks like this
 
         # Setup paths to an Overo cross-build environment
@@ -175,8 +172,7 @@ It looks like this
         PATH=${PATH}:${STAGEDIR}:${STAGEDIR}/armv7a-vfp-neon-poky-linux-gnueabi
 
 
-Save it as yocto-cross-env.sh where ever you want then run it like this 
-substituting your OETMP.
+Run it like this substituting the OETMP for your Yocto build.
 
         scott@quad:~$ export OETMP=/oe5
         scott@quad:~$ source yocto-cross-env.sh
