@@ -3,7 +3,7 @@
 ./configure -prefix /opt/qte \
   -embedded arm \
   -xplatform qws/linux-overo-storm-g++ \
-  -no-glib -no-cups -no-nis -no-largefile -no-accessibility 
+  -no-glib -no-cups -no-nis -no-largefile -no-accessibility \
   -no-openssl -no-gtkstyle \
   -no-3dnow -no-avx -no-mmx -no-sse -no-sse2 -no-sse3 -no-sse4.1 -no-sse4.2 \
   -little-endian -no-qt3support \
