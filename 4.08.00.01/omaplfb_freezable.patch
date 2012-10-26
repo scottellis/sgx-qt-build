@@ -1,0 +1,13 @@
+diff --git a/GFX_Linux_KM/services4/3rdparty/dc_omapfb3_linux/omaplfb_linux.c b/GFX_Linux_KM/services4/3rdparty/dc_omapfb3_linux/omaplfb_linux.c
+index 1184fb6..a2de545 100644
+--- a/GFX_Linux_KM/services4/3rdparty/dc_omapfb3_linux/omaplfb_linux.c
++++ b/GFX_Linux_KM/services4/3rdparty/dc_omapfb3_linux/omaplfb_linux.c
+@@ -281,7 +281,7 @@ OMAPLFB_ERROR OMAPLFBCreateSwapQueue(OMAPLFB_SWAPCHAIN *psSwapChain)
+ 	 * conditions, preventing the driver from holding on to
+ 	 * resources longer than it needs to.
+ 	 */
+-	psSwapChain->psWorkQueue = alloc_ordered_workqueue(DEVNAME, WQ_FREEZEABLE | WQ_MEM_RECLAIM);
++	psSwapChain->psWorkQueue = alloc_ordered_workqueue(DEVNAME, WQ_FREEZABLE | WQ_MEM_RECLAIM);
+ #else
+ #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36))
+ 	psSwapChain->psWorkQueue = create_freezable_workqueue(DEVNAME);
