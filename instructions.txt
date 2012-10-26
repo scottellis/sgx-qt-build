@@ -298,9 +298,9 @@ to use my home directory.
 
 4) Apply this pvrqwswsegl.patch to the Qt source. 
 
-Copy pvrqwswsegl.patch to the Qt source directory.
+Copy the patch to the Qt source directory.
 
-        scott@quad:~$ cp pvrqwswsegl.patch ~/qt
+        scott@quad:~$ cp sgx-qt-build/pvrqwswsegl.patch ~/qt
 
 Apply the patch
 
@@ -308,103 +308,36 @@ Apply the patch
         scott@quad:~/qt$ patch -p1 < pvrqwswsegl.patch
 
 
-4) Create a make specification (mkspec) for the overo under the qws directory
-called linux-overo-g++ by copying the generic one.
+5) Create a make specification (mkspec) for the overo cross build.
 
-        scott@quad:~$ cd qt/mkspecs/qws
-        scott@quad:~/qt/mkspecs/qws$ cp -r linux-generic-g++/ linux-overo-g++
-        scott@quad:~/qt/mkspecs/qws$ cd linux-overo-g++
-        
-Then edit the qmake.conf for the cross-build.
+Copy the example mkspecs from sgx-qt-build
 
-        scott@quad:~/qt/mkspecs/qws/linux-overo-g++$ <edit> qmake.conf
+        scott@quad:~/qt$ cd mkspecs/qws
+        scott@quad:~/qt/mkspecs/qws$ cp -r ~/sgx-qt-build/4.08.00.01/linux-overo-* .
 
-The resulting qmake.conf should look like this.
-
- 	#
-        # qmake configuration for building with arm-poky-linux-gnueabi-g++
-        #
-        
-        include(../../common/linux.conf)
-        include(../../common/gcc-base-unix.conf)
-        include(../../common/g++-unix.conf)
-        include(../../common/qws.conf)
-
-        
-        SGX_SDK_ROOT     = /home/scott/Graphics_SDK_4_06_00_02 
-        CROSSBINDIR      = /oe5/sysroots/x86_64-linux/usr/bin/armv7a-vfp-neon-poky-linux-gnueabi
-     
-         
-        # modifications to g++.conf
-        QMAKE_CFLAGS_RELEASE    = -O3 -march=armv7-a -mtune=cortex-a8 -mfpu=neon -mfloat-abi=softfp
-        QMAKE_CXXFLAGS_RELEASE  = -O3 -march=armv7-a -mtune=cortex-a8 -mfpu=neon -mfloat-abi=softfp
-        
-        QMAKE_CC         = $$CROSSBINDIR/arm-poky-linux-gnueabi-gcc
-        QMAKE_CXX        = $$CROSSBINDIR/arm-poky-linux-gnueabi-g++
-        QMAKE_LINK       = $$CROSSBINDIR/arm-poky-linux-gnueabi-g++
-        QMAKE_LINK_SHLIB = $$CROSSBINDIR/arm-poky-linux-gnueabi-g++
-        
-        # modifications to linux.conf
-        QMAKE_AR         = $$CROSSBINDIR/arm-poky-linux-gnueabi-ar cqs
-        QMAKE_OBJCOPY    = $$CROSSBINDIR/arm-poky-linux-gnueabi-objcopy
-        QMAKE_STRIP      = $$CROSSBINDIR/arm-poky-linux-gnueabi-strip
-        
-        load(qt_config)
-        
-          
-        QMAKE_INCDIR_OPENGL_ES2 = $$SGX_SDK_ROOT/GFX_Linux_SDK/OGLES2/SDKPackage/Builds/OGLES2/Include/
-        QMAKE_INCDIR_OPENGL_ES2 += $$SGX_SDK_ROOT/GFX_Linux_SDK/OGLES2/SDKPackage/Builds/OGLES2/LinuxOMAP3/Include/
-        QMAKE_INCDIR_OPENGL_ES2 += $$SGX_SDK_ROOT/include
-        QMAKE_INCDIR_OPENGL_ES2 += $$SGX_SDK_ROOT/GFX_Linux_SDK/OGLES/SDKPackage/Builds/OGLES/Include/
-        QMAKE_INCDIR_OPENGL_ES2 += $$SGX_SDK_ROOT/include/pvr2d/
-        QMAKE_INCDIR_OPENGL_ES2 += $$SGX_SDK_ROOT/include/OGLES2/
-        QMAKE_INCDIR_OPENGL_ES2 += $$SGX_SDK_ROOT/include/wsegl/
-        QMAKE_INCDIR_OPENGL_ES2 += $$SGX_SDK_ROOT/include/bufferclass_ti/
-        QMAKE_INCDIR_OPENGL_ES2 += $$SGX_SDK_ROOT/include/OGLES/
-        
-        QMAKE_LIBDIR_OPENGL_ES2 = $$SGX_SDK_ROOT/gfx_rel_es5.x/ 
-        QMAKE_LIBS_OPENGL_ES2   = -lEGL -lGLESv2 -lGLES_CM -lIMGegl -lsrv_um -lusc
-        
-        QMAKE_INCDIR_OPENGL     += $$SGX_SDK_ROOT/GFX_Linux_SDK/OGLES/SDKPackage/Builds/OGLES/Include/
-        QMAKE_LIBDIR_OPENGL     = $$SGX_SDK_ROOT/gfx_rel_es5.x
-        QMAKE_LIBDIR_OPENGL_QT  = $$SGX_SDK_ROOT/gfx_rel_es5.x
-        QMAKE_LIBS_OPENGL_ES1   = -lEGL -lGLES_CM -lIMGegl -lsrv_um -lusc
-         
-        QMAKE_INCDIR_OPENVG     = $$SGX_SDK_ROOT/GFX_Linux_SDK/OVG/SDKPackage/Builds/OVG/Include/
-        QMAKE_LIBDIR_OPENVG     = $$SGX_SDK_ROOT/gfx_rel_es5.x/
-        QMAKE_LIBS_OPENVG       = -lEGL -lGLESv2 -lGLES_CM -lIMGegl -lsrv_um -lOpenVG -lOpenVGU
-        
-        QMAKE_INCDIR_EGL        = $$QMAKE_INCDIR_OPENGL_ES2
-        QMAKE_INCDIR_EGL        += $$QT_INSTALL_DIR/src/3rdparty/powervr/wsegl2
-        QMAKE_INCDIR_POWERVR    = $$QT_INSTALL_DIR/src/3rdparty/powervr/wsegl2
-        QMAKE_LIBDIR_EGL        = $$QMAKE_LIBDIR_OPENGL_ES2
-        QMAKE_LIBS_EGL          = -lEGL -lIMGegl -lsrv_um -lGLESv2 -lGLES_CM -lusc
-        
-        QMAKE_INCDIR += $$TSLIB_INCDIR 
-        QMAKE_INCDIR += $$QMAKE_INCDIR_OPENGL_ES2
-        QMAKE_LIBDIR += $$QMAKE_LIBDIR_OPENGL_ES2 
-        QMAKE_LIBDIR += $$TSLIB_LIBDIR
-        QMAKE_LIBS = $$QMAKE_LIBS_OPENGL_ES2
+Edit the appropriate qmake.conf in either linux-overo-g++ or linux-overo-storm-g++
+depending on your target. The values you want to edit are the SGX_SDK_ROOT and
+OETMP definitions.
 
 
-5) Create a new include directory in the TI Graphics SDK directory that Qt will
+6) Create a new include directory in the TI Graphics SDK directory that Qt will
 look for.
       
-        scott@quad:~/qt/mkspecs/qws/linux-overo-g++$ cd ~/Graphics_SDK_4_06_00_02/include
-        scott@quad:~/Graphics_SDK_4_06_00_02/include$ mkdir GLES
-        scott@quad:~/Graphics_SDK_4_06_00_02/include$ cp OGLES2/EGL/eglplatform.h GLES/eglplatform.h
+        scott@quad:~/qt/mkspecs/qws/linux-overo-g++$ cd ~/Graphics_SDK_4_08_00_01/include
+        scott@quad:~/Graphics_SDK_4_08_00_01/include$ mkdir GLES
+        scott@quad:~/Graphics_SDK_4_08_00_01/include$ cp OGLES2/EGL/eglplatform.h GLES/
 
 
 6) Configure Qt, targeting /opt for the eventual install. The /opt directory does not
 get used until 'make install' is run later.
 
-        scott@quad:~/qt$ ./configure -prefix /opt/qte -embedded arm -xplatform qws/linux-overo-g++ \
-        -no-glib -no-cups -no-largefile -no-accessibility -no-openssl -no-gtkstyle \
-        -no-3dnow -no-avx -no-mmx -no-sse -no-sse2 -no-sse3 -no-sse4.1 -no-sse4.2 \
-        -little-endian -no-qt3support -opensource -confirm-license -fast \
-        -D QT_NO_QWS_CURSOR -D QT_QWS_CLIENTBLIT \
-         -depths 16,24,32 -qt-mouse-pc -plugin-mouse-pc \
-        -opengl es2 -qt-gfx-linuxfb -plugin-gfx-powervr
+Copy the qt-configure.sh script to the qt directory.
+
+        scott@quad:~/qt$ cp ~/sgx-qt-build/qt-configure.sh .
+
+Run the script, answering the licensing questions as appropriate. I choose LGPL.
+        
+        scott@quad:~/qt$ ./qt-configure.sh
 
 
 7) Build Qt
