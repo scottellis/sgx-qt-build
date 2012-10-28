@@ -9,13 +9,13 @@
 HOME=/home/scott
 
 # Set Toolchain path (ex /home/user/toolchain/arago-2011.09/armv7a)
-CSTOOL_DIR=$(SYSROOTSDIR)/bin/armv7a-vfp-neon-poky-linux-gnueabi
+CSTOOL_DIR=$(CROSSTOOLDIR)/armv7a-vfp-neon-poky-linux-gnueabi
 
 # Set Tool chain prefix (ex arm-arago-linux-gnueabi- )
 CSTOOL_PREFIX=arm-poky-linux-gnueabi-
 
 # Set kernel installation path ( ex /home/user/linux-04.00.01.13 )
-KERNEL_INSTALL_DIR=$(SYSROOTSDIR)/overo/kernel
+KERNEL_INSTALL_DIR=$(KERNELDIR)
 
 # Set Target filesystem path ( ex /home/user/targetfs )
 TARGETFS_INSTALL_DIR=
