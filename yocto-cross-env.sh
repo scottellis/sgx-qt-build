@@ -4,9 +4,9 @@ if [[ -z "${OETMP}" ]]; then
 fi
 
 export SYSROOTSDIR=${OETMP}/sysroots
-export STAGEDIR=${SYSROOTSDIR}/`uname -m`-linux/usr/bin
+export CROSSTOOLDIR=${SYSROOTSDIR}/`uname -m`-linux/usr/bin
 
 export KERNELDIR=${SYSROOTSDIR}/overo/kernel
 
-PATH=${PATH}:${STAGEDIR}:${STAGEDIR}/armv7a-vfp-neon-poky-linux-gnueabi
+PATH=${PATH}:${CROSSTOOLDIR}:${CROSSTOOLDIR}/armv7a-vfp-neon-poky-linux-gnueabi
 
