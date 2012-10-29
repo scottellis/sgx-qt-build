@@ -9,5 +9,5 @@ export KERNELDIR=${SYSROOTSDIR}/overo/kernel
 
 PATH=${PATH}:${CROSSTOOLDIR}:${CROSSTOOLDIR}/armv7a-vfp-neon-poky-linux-gnueabi
 
-export QMAKEQTE=/opt/qte/bin/qmake -spec qws/linux-overo-storm-g++
+export QMAKEQTE="/opt/qte/bin/qmake -spec qws/linux-overo-storm-g++"
 
