@@ -54,23 +54,23 @@ git://www.sakoman.com/git/linux-omap-2.6.git
 1. PATCH THE KERNEL DSS DRIVER AND REBUILD THE 3.2 KERNEL
 --------------------------------------------------------------------------------
 
-1) Download this patch from Robert Nelson
-
-https://github.com/RobertCNelson/stable-kernel/tree/master/patches/sgx/0001-Revert-OMAP-DSS2-remove-update_mode-from-omapdss-v3.2.patch
-
+1) Patch the DSS driver in the kernel
 
 The kernel recipe is here 
 
         meta-pansenti/recipes-kernel/linux/linux-sakoman_3.2.bb
 
 
-Copy the patch file here
+Copy this patch file in sgx-qt-build/kernel-3.2/0001-Revert...-v3.2.patch to your
+kernel recipe directory.
 
-        meta-pansenti/recipes-kernel/linux/linux-sakoman-3.2/sgx/0001-Revert-OMAP-DSS2-remove-update_mode-from-omapdss-v3.2.patch
+For instance, in my repo it would be this directory
+
+        <top-level>/meta-pansenti/recipes-kernel/linux/linux-sakoman-3.2/
 
 
 Then modify the kernel recipe, linux-sakoman_3.2.bb to add the DSS patch.
-Here is what mine looks like. You don't need the libertas patch.
+Here is what mine looks like. The libertas patch is unrelated.
 
         require linux.inc
 
@@ -89,7 +89,7 @@ Here is what mine looks like. You don't need the libertas patch.
         SRC_URI = "git://www.sakoman.com/git/linux-omap-2.6.git;branch=omap-3.2;protocol=git \
 	           file://defconfig \
                    file://libertas-async-fwload.patch \
-                   file://sgx/0001-Revert-OMAP-DSS2-remove-update_mode-from-omapdss-v3.2.patch \
+                   file://0001-Revert-OMAP-DSS2-remove-update_mode-from-omapdss-v3.2.patch \
                   "
 
 
@@ -99,8 +99,13 @@ Here is what mine looks like. You don't need the libertas patch.
         bitbake virtual/kernel
 	
 
-3) Rebuild your image. It should not include Qt, but should include the tslib
-packages.
+3) Rebuild your image. It should not include Qt, but should include
+
+tslib_calibrate
+tslib_tests
+tslib_conf
+fbset
+fbset-modes
 
 
 4) You should probably install it onto an SD card and make sure everything is
@@ -151,66 +156,30 @@ which I'll use.
 When prompted, you should select es3.x, es5.x and the SDK.
 
 
-3) Add some Yocto built cross-tools to your PATH. Do this however you want. 
-I have a script that I use for this kind of thing I call yocto-cross-env.sh
+3) Add some Yocto built cross-tools to your PATH.
 
-It looks like this
-
-        # Setup paths to an Overo cross-build environment
-
-        if [[ -z "${OETMP}" ]]; then
-	    echo "Need an OETMP defined!"
-            return 1
-        fi
-
-        export SYSROOTSDIR=${OETMP}/sysroots
-        export STAGEDIR=${SYSROOTSDIR}/`uname -m`-linux/usr/bin
-        
-        export KERNELDIR=${SYSROOTSDIR}/overo/kernel
-        
-        PATH=${PATH}:${STAGEDIR}:${STAGEDIR}/armv7a-vfp-neon-poky-linux-gnueabi
-
+I have a script that I use for this kind of thing I call yocto-cross-env.sh.
+It can be found in the root of the sgx-qt-build/ directory.
 
 Run it like this substituting the OETMP for your Yocto build.
 
         scott@quad:~$ export OETMP=/oe5
-        scott@quad:~$ source yocto-cross-env.sh
+        scott@quad:~$ source ~/sgx-qt-build/yocto-cross-env.sh
 
 
-4) Go to the ~/Graphics_SDK_4_08_00_01 directory and modify the Rules.make file,
-just the user section, so that it looks something like this.
+4) Update the the ~/Graphics_SDK_4_08_00_01/Rules.make for your system.
+
+I have an example in sgx-qt-build/4.-8.00.01/Rules.make.
+
+        scott@quad:~$ cp ~/sgx-qt-build/4.08.00.01/Rules.make ~/Graphics_SDK_4_08_00_01/
 
 
-        ################# FIELDS MODIFIABLE BY THE USER ###############################
-        ############### All the fields below are mandatory ############################
-        
-        # Set home area (ex /home/user/)
-        HOME=/home/scott
-         
-        # Set Toolchain path (ex /home/user/toolchain/arago-2011.09/armv7a)
-        CSTOOL_DIR=$(SYSROOTSDIR)/bin/armv7a-vfp-neon-poky-linux-gnueabi
-        
-        # Set Tool chain prefix (ex arm-arago-linux-gnueabi- )
-        CSTOOL_PREFIX=arm-poky-linux-gnueabi-
-        
-        # Set kernel installation path ( ex /home/user/linux-04.00.01.13 )
-        KERNEL_INSTALL_DIR=$(SYSROOTSDIR)/overo/kernel
-        
-        # Set Target filesystem path ( ex /home/user/targetfs )
-        TARGETFS_INSTALL_DIR=
-        
-        ######################### PRE-DEFINED VARIABLES ###############################
-        ######################## NOT MODIFIABLE BY USER ###############################
-        ...
-
-Note that I'm using SYSROOTSDIR from the yocto-source-me script.
-
-It's okay to leave the TARGETFS_INSTALL_DIR empty.
-
-5) Apply a small kernel definition patch to the SDK source
+5) Apply a small kernel definition patch to the SDK source. (A renaming of a
+definition from ..FREEZEABLE.. to ..FREEZABLE..)
 
 Copy the patch to the Graphics SDK directory
 
+        scott@quad:~$ cd Graphics_SDK_4_08_00_01
         scott@quad:~/Graphics_SDK_4_08_00_01$ cp ~/sgx-qt-build/4.08.00.01/omaplfb_freezable.patch .
 
 Apply the patch
@@ -531,5 +500,37 @@ You should include fbset as part of your Yocto image recipe. That version of
 fbset (v2.1.x) will work.
 
         
+--------------------------------------------------------------------------------
+Troubleshooting
+--------------------------------------------------------------------------------
+
+1) You get the following error when running the hellogl_es2 demo
+
+root@overo:/opt/qte/examples/opengl/hellogl_es2# ./hellogl_es2 -qws -display powervr
+QEglContext::createSurface(): Unable to create EGL surface, error = 0x300b
+
+You likely forgot or improperly configured /etc/powervr.ini
+
+
+2) You get the following loading the kernel modules (/etc/init.d/rc.pvr start)
+
+PVR_K: (FAIL) SGXInit: Incompatible HW core rev (10003) and SW core rev (10201).
+
+Your SGX core is too old. It is reporting version 1.0.3 and version 1.2.1 is 
+the minimum supported by this SDK.
+
+
+--------------------------------------------------------------------------------      
+References
+--------------------------------------------------------------------------------
+
+Robert Nelson's DSS patch for 3.2
+
+https://github.com/RobertCNelson/stable-kernel/tree/master/patches/sgx/0001-Revert-OMAP-DSS2-remove-update_mode-from-omapdss-v3.2.patch
+
+
+TI documentation for their Graphics SDK can be found here
+
+http://processors.wiki.ti.com/index.php/Graphics_SDK_Quick_installation_and_user_guide
 
 

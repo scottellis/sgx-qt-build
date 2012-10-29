@@ -99,8 +99,13 @@ Here is what mine looks like. The libertas patch is unrelated.
         bitbake virtual/kernel
 	
 
-3) Rebuild your image. It should not include Qt, but should include the tslib
-packages.
+3) Rebuild your image. It should not include Qt, but should include
+
+tslib_calibrate
+tslib_tests
+tslib_conf
+fbset
+fbset-modes
 
 
 4) Install your image onto an SD card and make sure everything is still working
@@ -151,30 +156,15 @@ which I'll use.
 When prompted, you should select es3.x, es5.x and the SDK.
 
 
-3) Add some Yocto built cross-tools to your PATH. Do this however you want. 
-I have a script that I use for this kind of thing I call yocto-cross-env.sh
+3) Add some Yocto built cross-tools to your PATH.
 
-It looks like this
-
-        # Setup paths to an Overo cross-build environment
-
-        if [[ -z "${OETMP}" ]]; then
-	    echo "Need an OETMP defined!"
-            return 1
-        fi
-
-        export SYSROOTSDIR=${OETMP}/sysroots
-        export CROSSTOOLDIR=${SYSROOTSDIR}/`uname -m`-linux/usr/bin
-        
-        export KERNELDIR=${SYSROOTSDIR}/overo/kernel
-        
-        PATH=${PATH}:${CROSSTOOLDIR}:${CROSSTOOLDIR}/armv7a-vfp-neon-poky-linux-gnueabi
-
+I have a script that I use for this kind of thing I call yocto-cross-env.sh.
+It can be found in the root of the sgx-qt-build/ directory.
 
 Run it like this substituting the OETMP for your Yocto build.
 
         scott@quad:~$ export OETMP=/oe5
-        scott@quad:~$ source yocto-cross-env.sh
+        scott@quad:~$ source ~/sgx-qt-build/yocto-cross-env.sh
 
 
 4) Go to the ~/Graphics_SDK_4_06_00_02 directory and modify the Rules.make file,
@@ -518,6 +508,7 @@ You can use fbset for this.
 After that you can run the hellogl_es2 example and it should run at >100 fps
 on a DM37xx at least.
 
+
 The default fbset that gets installed is part of BusyBox and doesn't support
 framebuffer mode changes like this.
 
@@ -537,6 +528,13 @@ QEglContext::createSurface(): Unable to create EGL surface, error = 0x300b
 
 You likely forgot or improperly configured /etc/powervr.ini
 
+
+2) You get the following loading the kernel modules (/etc/init.d/rc.pvr start)
+
+PVR_K: (FAIL) SGXInit: Incompatible HW core rev (10003) and SW core rev (10201).
+
+Your SGX core is too old. It is reporting version 1.0.3 and version 1.2.1 is 
+the minimum supported by this SDK.
 
 
 --------------------------------------------------------------------------------      
