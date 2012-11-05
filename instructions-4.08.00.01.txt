@@ -402,7 +402,7 @@ Add this line to /etc/ld.so.conf
 Then force a refresh of the run-time linker database
 
         root@overo:~# rm /etc/ld.so.cache
-	root@overo:~# ldconfig -v
+        root@overo:~# ldconfig -v
 
 
 4) Load the kernel drivers. 
