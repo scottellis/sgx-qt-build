@@ -5,8 +5,8 @@
 
 #By default all below variables have been initialized with equivalent AMSDK variables
 # Change them to appropriate paths as per your machine/build environment paths.
-# Set home area (ex /home/user/)
-HOME=/home/scott
+# Modify this if you installed the Graphics SDK somewhere other then your $HOME directory  
+#HOME=/home/scott
 
 # Set Toolchain path (ex /home/user/toolchain/arago-2011.09/armv7a)
 CSTOOL_DIR=$(CROSSTOOLDIR)/armv7a-vfp-neon-poky-linux-gnueabi
