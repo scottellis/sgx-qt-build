@@ -354,7 +354,7 @@ Create an /opt directory on the Gumstix rootfs
 
 Copy the TI Graphics stuff
 
-        scott@quad:~$ sudo cp -r ~/Graphics_SDK_4_06_00_02/gfx_rel_es5.x /media/card/opt
+        scott@quad:~$ sudo cp -r ~/Graphics_SDK_4_08_00_01/gfx_rel_es5.x /media/card/opt
 
 Copy Qt
 
