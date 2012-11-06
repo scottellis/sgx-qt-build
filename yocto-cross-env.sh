@@ -5,7 +5,7 @@ fi
 
 export SYSROOTSDIR=${OETMP}/sysroots
 export CROSSTOOLDIR=${SYSROOTSDIR}/`uname -m`-linux/usr/bin
-export KERNELDIR=${SYSROOTSDIR}/overo/kernel
+export KERNELDIR=${SYSROOTSDIR}/overo/usr/src/kernel
 
 PATH=${PATH}:${CROSSTOOLDIR}:${CROSSTOOLDIR}/armv7a-vfp-neon-poky-linux-gnueabi
 
