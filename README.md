@@ -173,6 +173,9 @@ I have an example in sgx-qt-build/4.-8.00.01/Rules.make.
 
         scott@quad:~$ cp ~/sgx-qt-build/4.08.00.01/Rules.make ~/Graphics_SDK_4_08_00_01/
 
+Unless you extracted the SDK somewhere other then your $HOME directory, the
+example should work unmodified.
+
 
 5) Apply a small kernel definition patch to the SDK source. (A renaming of a
 definition from ..FREEZEABLE.. to ..FREEZABLE..)
@@ -269,7 +272,7 @@ to use my home directory.
 
 Copy the patch to the Qt source directory.
 
-        scott@quad:~$ cp sgx-qt-build/pvrqwswsegl.patch ~/qt
+        scott@quad:~$ cp sgx-qt-build/qt-4.8.3/pvrqwswsegl.patch ~/qt
 
 Apply the patch
 
@@ -459,7 +462,31 @@ A fun one to try is hellogl_es2.
 
 
 For the 32-bit color 640x480 mode you have to specify a proper rgba setting first
-or you'll get an error like this.
+or you get error like (3) in the troubleshooting section.
+
+
+        
+--------------------------------------------------------------------------------
+Troubleshooting
+--------------------------------------------------------------------------------
+
+1) You get the following error when running the hellogl_es2 demo
+
+        root@overo:/opt/qte/examples/opengl/hellogl_es2# ./hellogl_es2 -qws -display powervr
+        QEglContext::createSurface(): Unable to create EGL surface, error = 0x300b
+
+You likely forgot or improperly configured /etc/powervr.ini
+
+
+2) You get the following loading the kernel modules (/etc/init.d/rc.pvr start)
+
+        PVR_K: (FAIL) SGXInit: Incompatible HW core rev (10003) and SW core rev (10201).
+
+Your SGX core is too old. It is reporting version 1.0.3 and version 1.2.1 is 
+the minimum supported by this SDK.
+
+
+3) You get the following error running demos on the touchscreen
 
         root@overo:/opt/qte/examples/opengl/hellogl_es2# ./hellogl_es2 -qws -display powervr
         /dev/fb0: could not find a suitable PVR2D pixel format
@@ -468,7 +495,7 @@ or you'll get an error like this.
         powervr: driver cannot connect
         Aborted
 
-You can use fbset for this.
+You can use fbset to fix this.
 
         root@overo:~# fbset
 
@@ -498,26 +525,6 @@ framebuffer mode changes like this.
 
 You should include fbset as part of your Yocto image recipe. That version of
 fbset (v2.1.x) will work.
-
-        
---------------------------------------------------------------------------------
-Troubleshooting
---------------------------------------------------------------------------------
-
-1) You get the following error when running the hellogl_es2 demo
-
-root@overo:/opt/qte/examples/opengl/hellogl_es2# ./hellogl_es2 -qws -display powervr
-QEglContext::createSurface(): Unable to create EGL surface, error = 0x300b
-
-You likely forgot or improperly configured /etc/powervr.ini
-
-
-2) You get the following loading the kernel modules (/etc/init.d/rc.pvr start)
-
-PVR_K: (FAIL) SGXInit: Incompatible HW core rev (10003) and SW core rev (10201).
-
-Your SGX core is too old. It is reporting version 1.0.3 and version 1.2.1 is 
-the minimum supported by this SDK.
 
 
 --------------------------------------------------------------------------------      
