@@ -512,19 +512,19 @@ the minimum supported by this SDK.
         powervr: driver cannot connect
         Aborted
 
-The frame buffer needs to be reconfigured. You can use fbset to fix this.
+The framebuffer needs to be reconfigured. You can use fbset to fix this.
 
 The default fbset that gets installed is part of BusyBox and doesn't support
 framebuffer mode changes like this.
 
-You should have include fbset as part of your Yocto image recipe. That version
-of fbset (v2.1.x) will work.
+If you included the standalone fbset package in your Yocto image recipe, version
+2.1.x, then the following will work.
 
 First unload the sgx kernel drivers
 
         root@overo:# /etc/init.d/rc.pvr stop
 
-Then change the frame buffer.
+Then change the framebuffer.
 
 Check the current settings
 
