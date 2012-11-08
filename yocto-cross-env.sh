@@ -20,12 +20,7 @@ export SGX_SDK_ROOT=${HOME}/Graphics_SDK_4_08_00_01
 # change to gfs_rel_es3.x for OMAP35xx builds
 export SGX_BIN_DIR=${SGX_SDK_ROOT}/gfx_rel_es5.x
 
-
-# use this for DM37xx builds
-export QMAKEQTE="/opt/qte/bin/qmake -spec qws/linux-overo-storm-g++"
-
-# use this for OMAP35xx builds
-#export QMAKEQTE="/opt/qte/bin/qmake -spec qws/linux-overo-g++"
+export QMAKEQTE="/opt/qte/bin/qmake -spec qws/linux-overo-g++"
 
 
 PATH=${PATH}:${CROSSBINDIR}:${CROSSTOOLDIR}
