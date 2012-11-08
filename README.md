@@ -167,14 +167,13 @@ Run it like this substituting the OETMP for your Yocto build.
         scott@quad:~$ source ~/sgx-qt-build/yocto-cross-env.sh
 
 
-4) Update the the ~/Graphics_SDK_4_08_00_01/Rules.make for your system.
+4) Copy the example Rules.make to the SDK directory.
 
-I have an example in sgx-qt-build/4.-8.00.01/Rules.make.
+The example is sgx-qt-build/4.-8.00.01/Rules.make.
 
         scott@quad:~$ cp ~/sgx-qt-build/4.08.00.01/Rules.make ~/Graphics_SDK_4_08_00_01/
 
-Unless you extracted the SDK somewhere other then your $HOME directory, the
-example should work unmodified.
+You should not have to modify it.
 
 
 5) Apply a small kernel definition patch to the SDK source. (A renaming of a
@@ -282,14 +281,11 @@ Apply the patch
 
 5) Create a make specification (mkspec) for the overo cross build.
 
-Copy the example mkspecs from sgx-qt-build
+There is an example mkspec in the sgx-qt-build directory.
 
         scott@quad:~/qt$ cd mkspecs/qws
-        scott@quad:~/qt/mkspecs/qws$ cp -r ~/sgx-qt-build/4.08.00.01/linux-overo-* .
+        scott@quad:~/qt/mkspecs/qws$ cp -r ~/sgx-qt-build/4.08.00.01/linux-overo-g++ .
 
-Edit the appropriate qmake.conf in either linux-overo-g++ or linux-overo-storm-g++
-depending on your target. The values you want to edit are the SGX_SDK_ROOT and
-OETMP definitions.
 
 
 6) Create a new include directory in the TI Graphics SDK directory that Qt will
