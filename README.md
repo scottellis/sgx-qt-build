@@ -22,7 +22,8 @@ small configuration difference for the OMAP3530 core.
 
 
 --------------------------------------------------------------------------------
-HIGH LEVEL STEPS
+0. OVERVIEW
+--------------------------------------------------------------------------------
 
 1) Patch the kernel DSS driver and rebuild the 3.2 kernel
 
