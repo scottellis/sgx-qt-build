@@ -99,17 +99,18 @@ Here is what mine looks like. The libertas patch is unrelated.
         bitbake virtual/kernel
 	
 
-3) Rebuild your image. It should not include Qt, but should include
+3) Rebuild your image. It should not include Qt, but should include the following
+if you plan on using a touchscreen.
 
-tslib_calibrate
-tslib_tests
-tslib_conf
-fbset
-fbset-modes
+        tslib_calibrate
+        tslib_tests
+        tslib_conf
+        fbset
+        fbset-modes
 
 
-4) You should probably install it onto an SD card and make sure everything is
-still working before proceeding.
+4) You should probably install your new image on an SD card and make sure 
+everything is still working before proceeding.
 
 
 --------------------------------------------------------------------------------
@@ -166,6 +167,9 @@ Run it like this substituting the OETMP for your Yocto build.
         scott@quad:~$ export OETMP=/oe5
         scott@quad:~$ source ~/sgx-qt-build/yocto-cross-env.sh
 
+The default in yocto-cross-env.sh is for Overo Storm boards (DM37xx).
+Change the SGX_BIN_DIR variable in yocto-cross-env.sh to ...es3.x.. to target
+OMAP35xx boards. 
 
 4) Copy the example Rules.make to the SDK directory.
 
@@ -189,7 +193,7 @@ Apply the patch
         scott@quad:~/Graphics_SDK_4_08_00_01$ patch -p1 < omaplfb_freezable.patch
 
 
-6) Running 'make help' will show you the options.
+6) Running 'make help' will show you the build options available.
 
         scott@quad:~/Graphics_SDK_4_08_00_01$ make help
 
@@ -235,16 +239,11 @@ That's all for the PowerVR drivers.
 3. BUILD QT WITH THE POWERVR PLUGIN
 --------------------------------------------------------------------------------
 
-These instructions are for Qt version 4.8.3. The latest Qt4 version when I wrote
-this.
+These instructions are for Qt version 4.8.3. This was the latest Qt4 version when
+I wrote this.
 
-To make the install a little easier and because I don't fully understand the
-cross-build path dependencies for Qt, I'm going to install the cross-built Qt 
-into /opt on both the build workstation and the Gumstix root filesystem. When
-I get a chance to play around with this a little I'll experiment with putting
-Qt in a better place. There are some font database location issues when the
-build and final target destinations aren't the same. Building Qt is time 
-consuming so I haven't debugged this.
+The cross-built Qt will be installed into /opt on both the build workstation and
+the Gumstix root filesystem. You will need permissions in /opt.
 
 
 1) Download the Qt source code from here
@@ -316,7 +315,14 @@ Run the script, answering the licensing questions as appropriate. I choose LGPL.
 
 7) Build Qt
 
-        scott@quad:~/qt$ make
+        scott@quad:~/qt$ make 
+
+Optionally, and for a big speed improvement, add -j N parameter to make. N should
+be the number of cpu cores you want to use. 
+
+For example
+
+        scott@quad:~/qt$ make -j6
 
 
 8) Install Qt on the local workstation to the /opt directory. This just collects
@@ -358,6 +364,11 @@ Copy the TI Graphics stuff
 
         scott@quad:~$ sudo cp -r ~/Graphics_SDK_4_08_00_01/gfx_rel_es5.x /media/card/opt
 
+For OMAP35xx builds, copy gfx_rel_es3.x
+
+        scott@quad:~$ sudo cp -r ~/Graphics_SDK_4_08_00_01/gfx_rel_es3.x /media/card/opt
+
+
 Copy Qt
 
         scott@quad:~$ sudo cp -r /opt/qte/ /media/card/opt
@@ -376,6 +387,9 @@ Put the SD card in the Gumstix and boot it.
 
 1) Install the GFX components. This copies various GFX scripts, libraries, 
 kernel modules and demo programs to standard locations.
+
+From here out, substitute gfx_rel_es3.x for gfx_rel_es5.x if you built for an
+OMAP35xx system.
 
         root@overo:~# cd /opt/gfx_rel_es5.x/
         root@overo:/opt/gfx_rel_es5.x# ./install.sh
