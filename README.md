@@ -271,7 +271,7 @@ to use my home directory.
 
 Copy the patch to the Qt source directory.
 
-        scott@quad:~$ cp sgx-qt-build/qt-4.8.3/pvrqwswsegl.patch ~/qt
+        scott@quad:~$ cp sgx-qt-build/qt-4.8.3/pvrqwswsegl.patch qt
 
 Apply the patch
 
@@ -301,7 +301,13 @@ get used until 'make install' is run later.
 
 Copy the qt-configure.sh script to the qt directory.
 
-        scott@quad:~/qt$ cp ~/sgx-qt-build/qt-configure.sh .
+        scott@quad:~/qt$ cp ~/sgx-qt-build/qt-4.8.3/qt-configure.sh .
+
+Make sure you have the environment setup if you are running this in a new shell
+then run this again substituing your OETMP.
+
+        scott@quad:~$ export OETMP=/oe5
+        scott@quad:~$ source ~/sgx-qt-build/yocto-cross-env.sh
 
 Run the script, answering the licensing questions as appropriate. I choose LGPL.
         
