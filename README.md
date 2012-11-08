@@ -1,10 +1,13 @@
-Notes for getting Qt OpenGL working on Gumstix Overo (draft)
+  SGX QT BUILD README
+--------------------------------------------------------------------------------
+
+Some notes for getting Qt OpenGL working on Gumstix Overo (draft)
 
 The goal is to get a working 3.2 kernel Overo system with Qt embedded and OpenGL
 support so we can run our custom Qt OpenGL apps on the Gumstix.
 
 These instructions could probably be modified to support Qt-X11, but I don't use
-X with the Gumstix and have not tried it.
+X with the Gumstix and have not tried that.
 
 The kernel and rootfs were built using Yocto. Qt and the TI graphics SDK are 
 built outside of Yocto/OE, but using the same cross-build tools.
@@ -22,7 +25,7 @@ small configuration difference for the OMAP3530 core.
 
 
 --------------------------------------------------------------------------------
-0. OVERVIEW
+0.  OVERVIEW
 --------------------------------------------------------------------------------
 
 1) Patch the kernel DSS driver and rebuild the 3.2 kernel
@@ -44,9 +47,11 @@ For the example, I am using a Yocto build where my TMPDIR is at /oe5.
 The meta-layer I am using is called meta-pansenti. There is no requirement to 
 use this layer, but paths referenced will have this name in them.
 
-You can get it here : github.com/Pansenti/meta-pansenti
+You can get it here : https://github.com/Pansenti/meta-pansenti
 
-I am getting the kernel from Steve Sakoman's repository.
+I'm using the pansenti-sgx-image recipe for the rootfs.
+
+The kernel comes from Steve Sakoman's repository.
 
 git://www.sakoman.com/git/linux-omap-2.6.git
 
