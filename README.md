@@ -512,7 +512,21 @@ the minimum supported by this SDK.
         powervr: driver cannot connect
         Aborted
 
-You can use fbset to fix this.
+The frame buffer needs to be reconfigured. You can use fbset to fix this.
+
+The default fbset that gets installed is part of BusyBox and doesn't support
+framebuffer mode changes like this.
+
+You should have include fbset as part of your Yocto image recipe. That version
+of fbset (v2.1.x) will work.
+
+First unload the sgx kernel drivers
+
+        root@overo:# /etc/init.d/rc.pvr stop
+
+Then change the frame buffer.
+
+Check the current settings
 
         root@overo:~# fbset
 
@@ -522,8 +536,12 @@ You can use fbset to fix this.
             timings 41666 80 48 3 7 32 4
             rgba 8/16,8/8,8/0,0/0
         endmode
-       
+
+Change them
+
         root@overo:~# fbset -rgba 8/16,8/8,8/0,8/24
+
+Check that they took.
 
         root@overo:~# fbset
 
@@ -534,14 +552,14 @@ You can use fbset to fix this.
             rgba 8/16,8/8,8/0,8/24
         endmode
 
+Reload the sgx drivers
+
+        root@overo:~# /etc/init.d/rc.pvr start
+
+
 After that you can run the hellogl_es2 example and it should run at >100 fps
 on a DM37xx at least.
 
-The default fbset that gets installed is part of BusyBox and doesn't support
-framebuffer mode changes like this.
-
-You should include fbset as part of your Yocto image recipe. That version of
-fbset (v2.1.x) will work.
 
 
 --------------------------------------------------------------------------------      
