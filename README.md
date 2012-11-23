@@ -68,9 +68,10 @@ The kernel recipe is here
 
 
 Copy this patch file in sgx-qt-build/kernel-3.2/0001-Revert...-v3.2.patch to your
-kernel recipe directory.
+kernel recipe directory. (The patch comes from Robert Nelson. See the References
+section at the end of this document.)
 
-For instance, in my repo it would be this directory
+For instance, in my repo the kernel recipe directory would be this
 
         <top-level>/meta-pansenti/recipes-kernel/linux/linux-sakoman-3.2/
 
