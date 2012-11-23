@@ -21,7 +21,12 @@ that omits that. Qt will be built and installed separately.
 The PowerVR drivers are closed-source. You can get them as part of the TI Linux 
 Graphics SDK. There are different drivers based on the version of the SGX core. 
 I'll be targeting the DM3730 core in this document, but I will point out the 
-small configuration difference for the OMAP3530 core.
+small configuration difference for the OMAP3530 core. I did verify the OMAP35xx
+builds work with recent cores. You'll have to use a different version of the
+TI Graphics SDK if your Gumstix/SGX core is too old.
+
+I am using the soft-fp builds of the SGX driver currently. The 4.08.00.01 drivers
+are available in a hard-fp version, but I haven't tried them yet.
 
 
 --------------------------------------------------------------------------------
