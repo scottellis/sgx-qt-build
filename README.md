@@ -307,8 +307,11 @@ look for.
         scott@quad:~/Graphics_SDK_4_08_00_01/include$ cp OGLES2/EGL/eglplatform.h GLES/
 
 
-6) Configure Qt, targeting /opt for the eventual install. The /opt directory does not
-get used until 'make install' is run later.
+6) Configure Qt, targeting /opt for the eventual install.
+
+First change permissions for /opt.
+
+        scott@quad:~/qt$ sudo chown -R scott:scott /opt
 
 Copy the qt-configure.sh script to the qt directory.
 
@@ -341,11 +344,7 @@ For example
 the libs, headers and demos/examples that need to go to the target into one 
 location. They'll be copied to the Gumstix SD card in another step.
 
-First change permissions for /opt.
-
-        scott@quad:~/qt$ sudo chown -R scott:scott /opt
-
-Then run the install step
+Run the install step like this
         
         scott@quad:~/qt$ make install
 
