@@ -462,9 +462,10 @@ You can add rc.pvr to your startup scripts.
 6. RUN SOME DEMOS
 --------------------------------------------------------------------------------
 
-At this point, I've only used a DVI connected display with this Qt/OpenGL system.
+I've used both DVI displays and Gumstix 4.3" touchscreens with this Qt/OpenGL 
+system and both work.
 
-The kernel boot params that I've tried are
+The dvi kernel boot params that I've tried are
 
         vram=12M
         omapdss.def_disp=dvi
