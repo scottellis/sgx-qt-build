@@ -143,7 +143,7 @@ targetting.
 
 1) Download the TI Graphics SDK from here
 
-http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/gfxsdk/
+http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/gfxsdk/latest/index_FDS.html
 
 I am using version 4.08.00.01 of the SDK for this example.
 
